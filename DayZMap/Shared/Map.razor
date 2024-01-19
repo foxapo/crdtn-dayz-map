@@ -1,0 +1,52 @@
+﻿<h3>Map</h3>
+
+<div id="map"></div>
+
+<script>
+
+
+var yx = L.latLng;
+
+var xy = function(x, y) {
+    if (Array.isArray(x)) { 
+        return yx(x[1], x[0]); 
+    }
+    return yx(y, x); 
+};
+
+var map = L.map('map', {
+    crs: L.CRS.Simple,
+     minZoom: -5
+});
+
+var bounds = [[0,0], [10240,10240]];
+var image = L.imageOverlay('images/1.png', bounds).addTo(map);
+
+map.fitBounds(bounds);
+
+var cordon          = xy(3520.500488, 1071.903320);
+var cordonCrossroad = xy(3596.715332, 1071.015137);
+var cordonFactoryA  = xy(3688.647949, 1261.178833);
+var cordonFactoryB  = xy(3744.361572, 1308.318970);
+
+var circle  = L.circle(xy(3849.104736, 2730.012451), { color: 'red', fillColor: '#f03', fillOpacity: 0.5, radius: 500 }).addTo(map).bindPopup('Garbage');
+var cs      = L.circle(xy(1976.022095, 751.457092), { color: 'red', fillColor: '#f03', fillOpacity: 0.5, radius: 100 }).addTo(map).bindPopup('Clear Sky');
+
+var marker      = L.marker(cordon).addTo(map).bindPopup('Cordon');
+var marker      = L.marker(cordonCrossroad).addTo(map).bindPopup('Cordon Mine');
+var factoryRect = [cordonFactoryA, cordonFactoryB];
+// create an orange rectangle
+L.rectangle(factoryRect, {color: "#ff7800", weight: 1}).addTo(map).bindPopup('Factory');
+
+
+function onMapClick(e) {
+    alert("You clicked the map at " + e.latlng);
+}
+
+map.on('click', onMapClick);
+
+</script>
+
+@code {
+
+}
